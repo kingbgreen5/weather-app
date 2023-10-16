@@ -3,7 +3,8 @@
 var searchFieldEl = document.querySelector('#searchField');
 var searchFieldInput = document.querySelector('#searchFieldInput');
 var displayEl = document.querySelector("#display")
-var displayTodayEl = document.querySelector(".displayToday")
+var displayTodayEl = document.querySelector("#displayToday") 
+var fiveDayContainerEl = document.querySelector('#fiveDayContainer');
 
 var formSubmitHandler = function (event) {             // when clicked, this is run
   event.preventDefault();
@@ -56,7 +57,7 @@ fetch(latlonURl)                                         // FETCH
         
             
             var locationDisplay = 
-            document.createElement("h3")
+            document.createElement("h2")
             locationDisplay.textContent = data.city.name +" "+ "DATEPLACEHOLDER" +" "+ data.list[0].weather[0].icon;    ////sets data for the display function above
             console.log(locationDisplay)
 
@@ -70,12 +71,62 @@ fetch(latlonURl)                                         // FETCH
 
             var todaysHumidity=
             document.createElement('h5');
-            todaysHumidity.textContent = "Humidity: " + data.list[0].main.humidity;
+            todaysHumidity.textContent = "Humidity: " + data.list[0].main.humidity + "%";
 
-            document.body.appendChild(locationDisplay)
-            document.body.appendChild(todaysTemp)
-            document.body.appendChild(todaysWind)
-            document.body.appendChild(todaysHumidity)
+
+            displayTodayEl.appendChild(locationDisplay)
+            displayTodayEl.appendChild(todaysTemp)
+            displayTodayEl.appendChild(todaysWind)
+            displayTodayEl.appendChild(todaysHumidity)
+
+         
+
+
+
+            var fiveDayForcast=                                             //
+            document.createElement('h2')
+            fiveDayForcast.textContent= "5 Day Forcast:"
+
+
+            var day1=
+            document.createElement('div')
+
+            var day1Date=
+            document.createElement('h3')
+            day1Date.textContent= "Date from DayJs"
+
+            var day1Temp=
+            document.createElement('h5');
+           day1Temp.textContent = "Temperature: " + data.list[8].main.temp;
+        
+           var day1Wind=
+           document.createElement('h5');
+           day1Wind.textContent = "Wind Speed: " + data.list[8].wind.speed;
+
+           var day1Humidity=
+           document.createElement('h5');
+           day1Humidity.textContent = "Humidity: " + data.list[8].main.humidity + "%";
+
+
+            day1.appendChild(day1Date)                      //tapes everything to day1 div
+            day1.appendChild(day1Temp)
+            day1.appendChild(day1Wind)
+            day1.appendChild(day1Humidity)
+
+           fiveDayForcast.appendChild(day1)                 //tapes all the days to fiveDayContainerEl
+           fiveDayForcast.appendChild(day2)
+           fiveDayForcast.appendChild(day3)
+           fiveDayForcast.appendChild(day4)
+            fiveDayForcast.appendChild(day5)
+
+            fiveDayContainerEl.appendChild(fiveDayForcast)
+
+            // for (var i = 0; i < 5; i++) {  
+            //   var 5day
+
+
+
+
           })}})
         
 

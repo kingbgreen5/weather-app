@@ -6,6 +6,9 @@ var displayEl = document.querySelector("#display")
 var displayTodayEl = document.querySelector("#displayToday") 
 var fiveDayContainerEl = document.querySelector('#fiveDayContainer');
 var searchHistory = document.querySelector('#localstoragediv')
+// var historyButtons = searchHistory.children('button')
+
+
 
 
 var today = dayjs()
@@ -22,30 +25,29 @@ var formSubmitHandler = function (event) {             // when clicked, this is 
   var usersSearchInput = searchFieldInput.value       // sets a variable from the info typed in the field
   console.log("Search Input: " + usersSearchInput)
   getSearch(usersSearchInput)                         // runs the search function with users search input
-  storeSearch()
+  storeSearch()                                      // log search to local storage
   renderSearch()
-  // log search to local storage
-  // When those buttons are clicked on after they are built later they need to auto search for the selected city
+ 
+ 
 };
 
-// 
-// historyButtonHandler
 
-function historyButtonHandler(){
-
-}
-
-
+  //     
+  var historyButtonHandler=function (event) {                        // When History Buttons are clicked, runs this function listening for any clicks in the search history Div
+  var element = event.target;                                        // Selects the Clicked BUtton
+  var usersSearchInput = element.id
+  if (element.matches("button") === true) {
+    console.log("Search Input: " + usersSearchInput)
+    getSearch(usersSearchInput) 
+    searchFieldInput.value = ''                                     // Clears Search Field
+  }}
 
 searchArray =[]
-function storeSearch(){                                         // Stores Searches in local Storage
-var usersSearchInput = searchFieldInput.value 
-searchArray.push(usersSearchInput)
-localStorage.setItem("search", JSON.stringify(searchArray));        
+  function storeSearch(){                                         // Stores Searches in local Storage
+  var usersSearchInput = searchFieldInput.value 
+  searchArray.push(usersSearchInput)
+  localStorage.setItem("search", JSON.stringify(searchArray));        
 };
-
-
-
 
 function renderSearch(){                                              // Renders Stored searches
   for (var i = 0; i < searchArray.length; i++) {
@@ -53,40 +55,24 @@ function renderSearch(){                                              // Renders
     searchArray =[]
     var button = document.createElement("button");
     button.textContent = search
+    button.id = search
     searchHistory.appendChild(button);
+    console.log(button)
 }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- function getSearch(usersSearchInput) {
-var latlonURl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + usersSearchInput +  '&limit=1&appid=4f5f4f23db412f9704e82e1a76863ed2' 
-fetch(latlonURl)                                         // FETCH
-.then(function (response) {
-  if (response.ok) {
-    console.log(response);
-    response.json().then(function (data) {
-      console.log(data);
-      if (data.length === 0) {
-        displayEl.textContent = 'Data not found';
-        return;
-      }
+function getSearch(usersSearchInput) {
+  var latlonURl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + usersSearchInput +  '&limit=1&appid=4f5f4f23db412f9704e82e1a76863ed2' 
+  fetch(latlonURl)                                         // FETCH
+  .then(function (response) {
+    if (response.ok) {
+      console.log(response);
+      response.json().then(function (data) {
+        console.log(data);
+    if (data.length === 0) {
+      displayEl.textContent = 'Data not found';
+      return;
+    }
       var latitude= data[0].lat                                               // take lat long, input into variables for use for next fetch
       var longitude= data[0].lon
       console.log(latitude)
@@ -98,30 +84,24 @@ fetch(latlonURl)                                         // FETCH
           console.log(response);
           response.json().then(function (data) {
             console.log(data);
-
-            
-        
             displayTodayEl.textContent=''                                                                   //Clears info From the Displayed elements  
             fiveDayContainerEl.textContent=''
 
-
-
-
             var locationDisplay = 
-            document.createElement("h2")
-            locationDisplay.textContent = data.city.name +" "+ todayFormated + " " + data.list[0].weather[0].icon;    ////sets data for the display function above
+              document.createElement("h2")
+              locationDisplay.textContent = data.city.name +" "+ todayFormated + " " + data.list[0].weather[0].icon;    ////sets data for the display function above
            
             var todaysTemp=
-            document.createElement('h5');
-            todaysTemp.textContent = "Temperature: " + data.list[0].main.temp +"°F";
+              document.createElement('h5');
+              todaysTemp.textContent = "Temperature: " + data.list[0].main.temp +"°F";
 
             var todaysWind=
-            document.createElement('h5');
-            todaysWind.textContent = "Wind Speed: " + data.list[0].wind.speed + " MPH";
+              document.createElement('h5');
+              todaysWind.textContent = "Wind Speed: " + data.list[0].wind.speed + " MPH";
 
             var todaysHumidity=
-            document.createElement('h5');
-            todaysHumidity.textContent = "Humidity: " + data.list[0].main.humidity + "%";
+              document.createElement('h5');
+              todaysHumidity.textContent = "Humidity: " + data.list[0].main.humidity + "%";
 
 
             displayTodayEl.appendChild(locationDisplay)
@@ -133,25 +113,25 @@ fetch(latlonURl)                                         // FETCH
 
 
             var fiveDayForcast=                                             //
-            document.createElement('h2')
-            fiveDayForcast.textContent= "5 Day Forcast:"
+              document.createElement('h2')
+              fiveDayForcast.textContent= "5 Day Forcast:"
 
 
 
             var day1=                                                         // DAY1
-            document.createElement('div')
+              document.createElement('div')
 
             var day1Date=
-            document.createElement('h3')
-            day1Date.textContent = today.add(1, 'day').format(' M/D/YY');
+              document.createElement('h3')
+              day1Date.textContent = today.add(1, 'day').format(' M/D/YY');
 
             var day1Temp=
-            document.createElement('h5');
-           day1Temp.textContent = "Temperature: " + data.list[8].main.temp +"°F";
+              document.createElement('h5');
+              day1Temp.textContent = "Temperature: " + data.list[8].main.temp +"°F";
         
            var day1Wind=
-           document.createElement('h5');
-           day1Wind.textContent = "Wind Speed: " + data.list[8].wind.speed + " MPH";
+            document.createElement('h5');
+             day1Wind.textContent = "Wind Speed: " + data.list[8].wind.speed + " MPH";
 
            var day1Humidity=
            document.createElement('h5');
@@ -315,5 +295,7 @@ fetch(latlonURl)                                         // FETCH
 
 
 
-searchFieldEl.addEventListener('submit', formSubmitHandler);
-searchHistory.addEventListener('submit', historyButtonHandler);
+searchFieldEl.addEventListener('submit', formSubmitHandler);          // listens for clicks on the submit button
+// searchHistory.addEventListener('click', historyButtonClick);        // Listens for clicks in the search history Div
+
+searchHistory.addEventListener("click", historyButtonHandler);   

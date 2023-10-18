@@ -99,7 +99,7 @@ function getSearch(usersSearchInput) {                              // Runs Sear
       var longitude= data[0].lon
       console.log(latitude)
       console.log(longitude)
-        var locationURl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&units=imperial&appid=4f5f4f23db412f9704e82e1a76863ed2'
+        var locationURl = '//api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&units=imperial&appid=4f5f4f23db412f9704e82e1a76863ed2'
       fetch(locationURl)                                         // FETCH
       .then(function (response) {
         if (response.ok) {

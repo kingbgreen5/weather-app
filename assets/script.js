@@ -82,9 +82,10 @@ function renderSearch(){
 }
 }
 
+// http://
 
 function getSearch(usersSearchInput) {                              // Runs Search Function
-  var latlonURl = '//api.openweathermap.org/geo/1.0/direct?q=' + usersSearchInput +  '&limit=1&appid=4f5f4f23db412f9704e82e1a76863ed2' 
+  var latlonURl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + usersSearchInput +  '&limit=1&appid=4f5f4f23db412f9704e82e1a76863ed2' 
   fetch(latlonURl)                                         // FETCH
   .then(function (response) {
     if (response.ok) {
@@ -99,7 +100,7 @@ function getSearch(usersSearchInput) {                              // Runs Sear
       var longitude= data[0].lon
       console.log(latitude)
       console.log(longitude)
-        var locationURl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&units=imperial&appid=4f5f4f23db412f9704e82e1a76863ed2'
+        var locationURl = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&units=imperial&appid=4f5f4f23db412f9704e82e1a76863ed2'
       fetch(locationURl)                                         // FETCH
       .then(function (response) {
         if (response.ok) {

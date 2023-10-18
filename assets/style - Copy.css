@@ -1,0 +1,42 @@
+
+:root{}
+
+
+
+
+body{
+  background-color:#222 ;
+}
+
+
+
+
+#displayToday{
+width: 90%;
+/* background-color :blue; */
+
+border-color: #a39895;
+border: 1em;
+}
+
+img{
+  width: 40%;
+  /* background-color :blue; */
+
+  }
+  
+
+ #fiveDayContainer{
+  width: 70%;
+  /* background-color :blue; */
+  padding: 1em;
+  margin-top: 1em ;
+  border: #a39895;
+
+ }
+
+ #fiveDayBlocks div{
+  padding-bottom: 1em;
+  border: #a39895;
+ }
+  

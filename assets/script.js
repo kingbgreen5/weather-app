@@ -8,7 +8,7 @@ var fiveDayContainerEl = document.querySelector('#fiveDayContainer');
 var searchHistory = document.querySelector('#localstoragediv')
 // var historyButtons = searchHistory.children('button')
 
-
+searchArray =[]  
 
 
 var today = dayjs()
@@ -27,13 +27,10 @@ var formSubmitHandler = function (event) {             // when clicked, this is 
   getSearch(usersSearchInput)                         // runs the search function with users search input
   storeSearch()                                      // log search to local storage
   renderSearch()
- 
- 
 };
 
-
-  //     
-  var historyButtonHandler=function (event) {                        // When History Buttons are clicked, runs this function listening for any clicks in the search history Div
+  
+  var historyButtonHandler = function (event) {                        // When History Buttons are clicked, runs this function listening for any clicks in the search history Div
   var element = event.target;                                        // Selects the Clicked BUtton
   var usersSearchInput = element.id
   if (element.matches("button") === true) {
@@ -42,17 +39,22 @@ var formSubmitHandler = function (event) {             // when clicked, this is 
     searchFieldInput.value = ''                                     // Clears Search Field
   }}
 
-searchArray =[]
-  function storeSearch(){                                         // Stores Searches in local Storage
+  
+  function storeSearch(){     // Stores Searches in local Storage
   var usersSearchInput = searchFieldInput.value 
   searchArray.push(usersSearchInput)
   localStorage.setItem("search", JSON.stringify(searchArray));        
+  console.log(searchArray)
 };
 
-function renderSearch(){                                              // Renders Stored searches
-  for (var i = 0; i < searchArray.length; i++) {
-    var search = searchArray[i];
-    searchArray =[]
+function renderSearch(){       
+  
+  searchHistory.textContent=''
+  var storedSearches = JSON.parse(localStorage.getItem("search")); 
+  // searchArray = JSON.parse(localStorage.getItem("search"));                // Renders Stored searches
+  for (var i = 0; i < storedSearches.length; i++) {
+    var search = storedSearches[i];
+    // searchArray =[]
     var button = document.createElement("button");
     button.textContent = search
     button.id = search
@@ -61,7 +63,8 @@ function renderSearch(){                                              // Renders
 }
 }
 
-function getSearch(usersSearchInput) {
+
+function getSearch(usersSearchInput) {                              // Runs Search Function
   var latlonURl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + usersSearchInput +  '&limit=1&appid=4f5f4f23db412f9704e82e1a76863ed2' 
   fetch(latlonURl)                                         // FETCH
   .then(function (response) {
@@ -89,22 +92,29 @@ function getSearch(usersSearchInput) {
 
             var locationDisplay = 
               document.createElement("h2")
-              locationDisplay.textContent = data.city.name +" "+ todayFormated + " " + data.list[0].weather[0].icon;    ////sets data for the display function above
+              locationDisplay.textContent = data.city.name +" "+ todayFormated;   
+
+
+            var todaysImg=
+              document.createElement('img')
+              todaysImg.src= 'https://openweathermap.org/img/wn/'+    data.list[0].weather[0].icon   +  '@2x.png'
+              
            
             var todaysTemp=
-              document.createElement('h5');
+              document.createElement('h4');
               todaysTemp.textContent = "Temperature: " + data.list[0].main.temp +"°F";
 
             var todaysWind=
-              document.createElement('h5');
+              document.createElement('h4');
               todaysWind.textContent = "Wind Speed: " + data.list[0].wind.speed + " MPH";
 
             var todaysHumidity=
-              document.createElement('h5');
+              document.createElement('h4');
               todaysHumidity.textContent = "Humidity: " + data.list[0].main.humidity + "%";
 
-
+           
             displayTodayEl.appendChild(locationDisplay)
+            displayTodayEl.appendChild(todaysImg)
             displayTodayEl.appendChild(todaysTemp)
             displayTodayEl.appendChild(todaysWind)
             displayTodayEl.appendChild(todaysHumidity)
@@ -112,7 +122,7 @@ function getSearch(usersSearchInput) {
          
 
 
-            var fiveDayForcast=                                             //
+            var fiveDayForcast=                                             // div for 5 Day
               document.createElement('h2')
               fiveDayForcast.textContent= "5 Day Forcast:"
 
@@ -120,6 +130,11 @@ function getSearch(usersSearchInput) {
 
             var day1=                                                         // DAY1
               document.createElement('div')
+              day1.id= "fiveDayBlocks"
+
+              var day1Img=
+              document.createElement('img')
+              day1Img.src= 'https://openweathermap.org/img/wn/'+    data.list[8].weather[0].icon   +  '@2x.png'
 
             var day1Date=
               document.createElement('h3')
@@ -127,164 +142,161 @@ function getSearch(usersSearchInput) {
 
             var day1Temp=
               document.createElement('h5');
-              day1Temp.textContent = "Temperature: " + data.list[8].main.temp +"°F";
+              day1Temp.textContent = "Temperature: " + data.list[7].main.temp +"°F";
         
-           var day1Wind=
-            document.createElement('h5');
-             day1Wind.textContent = "Wind Speed: " + data.list[8].wind.speed + " MPH";
+            var day1Wind=
+              document.createElement('h5');
+              day1Wind.textContent = "Wind Speed: " + data.list[7].wind.speed + " MPH";
 
-           var day1Humidity=
-           document.createElement('h5');
-           day1Humidity.textContent = "Humidity: " + data.list[8].main.humidity + "%";
+            var day1Humidity=
+              document.createElement('h5');
+              day1Humidity.textContent = "Humidity: " + data.list[7].main.humidity + "%";
 
-           day1.appendChild(day1Date)                                          //tapes everything to day1 div
-           day1.appendChild(day1Temp)
-           day1.appendChild(day1Wind)
-           day1.appendChild(day1Humidity)
+            day1.appendChild(day1Date)                                          //tapes everything to day1 div
+            day1.appendChild(day1Img)
+            day1.appendChild(day1Temp)
+            day1.appendChild(day1Wind)
+            day1.appendChild(day1Humidity)
 
 
+            var day2=                                                         // DAY2
+              document.createElement('div')
+              day2.id = "fiveDayBlocks"
 
-           var day2=                                                         // DAY2
-           document.createElement('div')
+            var day2Date=
+              document.createElement('h3')
+              day2Date.textContent= today.add(2, 'day').format(' M/D/YY');
 
-           var day2Date=
-           document.createElement('h3')
-           day2Date.textContent= today.add(2, 'day').format(' M/D/YY');
+            var day2Img=
+              document.createElement('img')
+              day2Img.src= 'https://openweathermap.org/img/wn/'+    data.list[16].weather[0].icon   +  '@2x.png'
 
-           var day2Temp=
-           document.createElement('h5');
-          day2Temp.textContent = "Temperature: " + data.list[16].main.temp +"°F";
+            var day2Temp=
+              document.createElement('h5');
+              day2Temp.textContent = "Temperature: " + data.list[15].main.temp +"°F";
        
-          var day2Wind=
-          document.createElement('h5');
-          day2Wind.textContent = "Wind Speed: " + data.list[16].wind.speed + " MPH";
+            var day2Wind=
+              document.createElement('h5');
+              day2Wind.textContent = "Wind Speed: " + data.list[15].wind.speed + " MPH";
 
-          var day2Humidity=
-          document.createElement('h5');
-          day2Humidity.textContent = "Humidity: " + data.list[16].main.humidity + "%";
+            var day2Humidity=
+              document.createElement('h5');
+              day2Humidity.textContent = "Humidity: " + data.list[15].main.humidity + "%";
 
-          day2.appendChild(day2Date)                                          //tapes everything to day2 div
-          day2.appendChild(day2Temp)
-          day2.appendChild(day2Wind)
-          day2.appendChild(day2Humidity)
+            day2.appendChild(day2Date)  
+            day2.appendChild(day2Img)                                        //tapes everything to day2 div
+            day2.appendChild(day2Temp)
+            day2.appendChild(day2Wind)
+            day2.appendChild(day2Humidity)
 
 
+            var day3=                                                         // DAY3
+              document.createElement('div')
+              day3.id = "fiveDayBlocks"
 
-          var day3=                                                         // DAY3
-          document.createElement('div')
+            var day3Img=
+              document.createElement('img')
+              day3Img.src= 'https://openweathermap.org/img/wn/'+    data.list[24].weather[0].icon   +  '@2x.png'
 
-          var day3Date=
-          document.createElement('h3')
-          day3Date.textContent= today.add(3, 'day').format(' M/D/YY');
+            var day3Date=
+              document.createElement('h3')
+              day3Date.textContent= today.add(3, 'day').format(' M/D/YY');
 
-          var day3Temp=
-          document.createElement('h5');
-         day3Temp.textContent = "Temperature: " + data.list[24].main.temp +"°F";
+            var day3Temp=
+              document.createElement('h5');
+              day3Temp.textContent = "Temperature: " + data.list[25].main.temp +"°F";
       
-         var day3Wind=
-         document.createElement('h5');
-         day3Wind.textContent = "Wind Speed: " + data.list[24].wind.speed + " MPH";
+            var day3Wind=
+              document.createElement('h5');
+              day3Wind.textContent = "Wind Speed: " + data.list[25].wind.speed + " MPH";
 
-         var day3Humidity=
-         document.createElement('h5');
-         day3Humidity.textContent = "Humidity: " + data.list[24].main.humidity + "%";
+            var day3Humidity=
+              document.createElement('h5');
+              day3Humidity.textContent = "Humidity: " + data.list[25].main.humidity + "%";
 
-         day3.appendChild(day3Date)                                          //tapes everything to day3 div
-         day3.appendChild(day3Temp)
-         day3.appendChild(day3Wind)
-         day3.appendChild(day3Humidity)
-
-
-
-         var day4=                                                         // DAY4
-         document.createElement('div')
-
-         var day4Date=
-         document.createElement('h3')
-         day4Date.textContent= today.add(4, 'day').format(' M/D/YY');
-
-         var day4Temp=
-         document.createElement('h5');
-        day4Temp.textContent = "Temperature: " + data.list[32].main.temp +"°F";
-     
-        var day4Wind=
-        document.createElement('h5');
-        day4Wind.textContent = "Wind Speed: " + data.list[32].wind.speed + " MPH";
-
-        var day4Humidity=
-        document.createElement('h5');
-        day4Humidity.textContent = "Humidity: " + data.list[32].main.humidity + "%";
-
-        day4.appendChild(day4Date)                                          //tapes everything to day4 div
-        day4.appendChild(day4Temp)
-        day4.appendChild(day4Wind)
-        day4.appendChild(day4Humidity)
+            day3.appendChild(day3Date)                                          //tapes everything to day3 div
+            day3.appendChild(day3Img)
+            day3.appendChild(day3Temp)
+            day3.appendChild(day3Wind)
+            day3.appendChild(day3Humidity)
 
 
+            var day4=                                                         // DAY4
+              document.createElement('div')
+              day4.id = "fiveDayBlocks"
 
-        var day5=                                                         // DAY5
-        document.createElement('div')
+            var day4Img=
+              document.createElement('img')
+              day4Img.src= 'https://openweathermap.org/img/wn/'+    data.list[31].weather[0].icon   +  '@2x.png'
 
-        var day5Date=
-        document.createElement('h3')
-        day5Date.textContent= today.add(5, 'day').format(' M/D/YY');
+            var day4Date=
+              document.createElement('h3')
+              day4Date.textContent= today.add(4, 'day').format(' M/D/YY');
 
-        var day5Temp=
-        document.createElement('h5');
-        day5Temp.textContent = "Temperature: " + data.list[24].main.temp +"°F";
-    
-       var day5Wind=
-       document.createElement('h5');
-       day5Wind.textContent = "Wind Speed: " + data.list[24].wind.speed + " MPH";
-
-       var day5Humidity=
-       document.createElement('h5');
-       day5Humidity.textContent = "Humidity: " + data.list[24].main.humidity + "%";
-
-       day5.appendChild(day5Date)                                          //tapes everything to day2 div
-       day5.appendChild(day5Temp)
-       day5.appendChild(day5Wind)
-       day5.appendChild(day5Humidity)
-
-
-
-
-
-
+            var day4Temp=
+              document.createElement('h5');
+              day4Temp.textContent = "Temperature: " + data.list[31].main.temp +"°F";
         
+            var day4Wind=
+              document.createElement('h5');
+              day4Wind.textContent = "Wind Speed: " + data.list[31].wind.speed + " MPH";
+
+            var day4Humidity=
+              document.createElement('h5');
+              day4Humidity.textContent = "Humidity: " + data.list[31].main.humidity + "%";
+
+            day4.appendChild(day4Date)                                          //tapes everything to day4 div
+            day4.appendChild(day4Img)
+            day4.appendChild(day4Temp)
+            day4.appendChild(day4Wind)
+            day4.appendChild(day4Humidity)
 
 
+            var day5=                                                         // DAY5
+              document.createElement('div')
+              day5.id = "fiveDayBlocks"
+              
+
+            var day5Img=
+              document.createElement('img')
+              day5Img.src= 'https://openweathermap.org/img/wn/'+    data.list[31].weather[0].icon   +  '@2x.png'
+
+            var day5Img=
+              document.createElement('img')
+              day5Img.src= 'https://openweathermap.org/img/wn/'+    data.list[39].weather[0].icon   +  '@2x.png'
+
+            var day5Date=
+              document.createElement('h3')
+              day5Date.textContent= today.add(5, 'day').format(' M/D/YY');
+
+            var day5Temp=
+              document.createElement('h5');
+              day5Temp.textContent = "Temperature: " + data.list[39].main.temp +"°F";
+        
+            var day5Wind=
+              document.createElement('h5');
+              day5Wind.textContent = "Wind Speed: " + data.list[39].wind.speed + " MPH";
+
+            var day5Humidity=
+              document.createElement('h5');
+              day5Humidity.textContent = "Humidity: " + data.list[39].main.humidity + "%";
+
+            day5.appendChild(day5Date)                                          //tapes everything to day2 div
+            day5.appendChild(day5Img)
+            day5.appendChild(day5Temp)
+            day5.appendChild(day5Wind)
+            day5.appendChild(day5Humidity)
 
            fiveDayForcast.appendChild(day1)                 //tapes all the days to fiveDayForcast
            fiveDayForcast.appendChild(day2)
            fiveDayForcast.appendChild(day3)
            fiveDayForcast.appendChild(day4)
-            fiveDayForcast.appendChild(day5)
+          fiveDayForcast.appendChild(day5)
 
             fiveDayContainerEl.appendChild(fiveDayForcast)    //tapes fiveDayForcast to the fiveDayContainer
            console.log(fiveDayForcast)
+          })}})});
 
-       
-
-
-          })}})
-        
-
-
-    
-
-
-
-
-
-
-  //     for (var i = 0; i < data.photos.length; i++) {          // for the length of the string returned, go through each one
-  //       imgURL=(data.photos[i].img_src);                       // set the image source to imgURL
-  //       cameraName=(data.photos[i].camera.full_name);          // Set the name of the Camera that took the photo to cameraName
-  //       displayPhotos(imgURL);
-  // }
-}
-);
   } else {
     alert('Error: ' + response.statusText);
   }
@@ -296,6 +308,5 @@ function getSearch(usersSearchInput) {
 
 
 searchFieldEl.addEventListener('submit', formSubmitHandler);          // listens for clicks on the submit button
-// searchHistory.addEventListener('click', historyButtonClick);        // Listens for clicks in the search history Div
-
 searchHistory.addEventListener("click", historyButtonHandler);   
+renderSearch()

@@ -84,7 +84,7 @@ function renderSearch(){
 
 
 function getSearch(usersSearchInput) {                              // Runs Search Function
-  var latlonURl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + usersSearchInput +  '&limit=1&appid=4f5f4f23db412f9704e82e1a76863ed2' 
+  var latlonURl = '//api.openweathermap.org/geo/1.0/direct?q=' + usersSearchInput +  '&limit=1&appid=4f5f4f23db412f9704e82e1a76863ed2' 
   fetch(latlonURl)                                         // FETCH
   .then(function (response) {
     if (response.ok) {

@@ -17,31 +17,28 @@
 
 <header> <h1 class="">Weather Dashboard</h1></header>
 <body>
-    <main>
-        <div>
+    
+      
     
           <div class="card">
-            <h4 class="">Search for a City</h4>
+            
            
             <form id="searchField" class="card-body">
               <label class="form-label"></label>
               <input name="username" id="searchFieldInput" type="text" autofocus="true" class="form-input" />
-              <button type="submit" class="btn">Search</button>
+              <button type="submit" id="search" class=>Search</button> <button id="clearSearches">X</button>
+              
             </form>
           </div>
+<hr>
+<h6>History</h6>
 
-          <hr>
-    <div id='localstoragediv' class="localstoragediv"></div>
-      
-    
-    
-    
-
-
-    <div id="displayToday">
+<div id='localstoragediv' class="localstoragediv">
     </div>
-    <div id="fiveDayContainer">   
-   
+ 
+    
+    <div id="displayToday"></div>
+    <div id="fiveDayContainer" class="fiveDayClass">   
       <div id="day1"></div>
       <div id="day2"></div>
       <div id="day3"></div>
@@ -50,8 +47,7 @@
 
     </div>
           
-
-
+   
 
     <script
     src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
